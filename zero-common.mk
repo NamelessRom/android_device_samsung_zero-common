@@ -106,7 +106,25 @@ PRODUCT_COPY_FILES += \
 
 # Graphics
 PRODUCT_PACKAGES += \
-    gralloc.exynos5
+    gralloc.exynos5 \
+    hwcomposer.exynos5 \
+    libexynosutils \
+    libexynosv4l2 \
+    libexynosscaler \
+    libexynosgscaler \
+    libmpp \
+    libion_exynos \
+    libswconverter \
+    libcsc \
+    libhwjpeg \
+    libfimg \
+    libdisplay \
+    libdisplaymodule \
+    libExynosHWCService  \
+    libhwcutils \
+    libhwcutilsmodule \
+    libvirtualdisplay \
+    libvirtualdisplaymodule
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
