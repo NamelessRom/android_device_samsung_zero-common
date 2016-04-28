@@ -106,7 +106,8 @@ PRODUCT_COPY_FILES += \
 
 # Graphics
 PRODUCT_PACKAGES += \
-    gralloc.exynos5
+    gralloc.exynos5 \
+    hwcomposer.exynos5
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
