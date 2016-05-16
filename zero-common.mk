@@ -126,6 +126,10 @@ PRODUCT_PACKAGES += \
     libvirtualdisplay \
     libvirtualdisplaymodule
 
+# hardware/samsung/AdvancedDisplay (MDNIE)
+PRODUCT_PACKAGES += \
+    AdvancedDisplay
+
 # Keylayouts
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl \
