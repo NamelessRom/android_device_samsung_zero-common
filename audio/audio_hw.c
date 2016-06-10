@@ -54,10 +54,11 @@
 #define PCM_CARD_SPDIF 1
 #define PCM_TOTAL 2
 
-#define PCM_DEVICE 0       /* Playback link */
-#define PCM_DEVICE_VOICE 1 /* Baseband link */
-#define PCM_DEVICE_SCO 2   /* Bluetooth link */
-#define PCM_DEVICE_DEEP 8  /* Deep buffer */
+#define PCM_DEVICE_PLAYBACK 6 /* Playback link */
+#define PCM_DEVICE_VOICE 1    /* Baseband link */
+#define PCM_DEVICE_SCO 2      /* Bluetooth link */
+#define PCM_DEVICE_DEEP 3     /* Deep buffer */
+#define PCM_DEVICE_CAPTURE 0  /* Capture link */
 
 #define MIXER_CARD 0
 
@@ -930,7 +931,7 @@ static int start_input_stream(struct stream_in *in)
     struct audio_device *adev = in->dev;
 
     in->pcm = pcm_open(PCM_CARD,
-                       PCM_DEVICE,
+                       PCM_DEVICE_CAPTURE,
                        PCM_IN,
                        in->config);
     if (in->pcm && !pcm_is_ready(in->pcm)) {
@@ -1767,7 +1768,7 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
         out->config = pcm_config_hdmi_multi;
         out->config.rate = config->sample_rate;
         out->config.channels = popcount(config->channel_mask);
-        out->pcm_device = PCM_DEVICE;
+        out->pcm_device = PCM_DEVICE_PLAYBACK;
         type = OUTPUT_HDMI;
     } else if (flags & AUDIO_OUTPUT_FLAG_DEEP_BUFFER) {
         ALOGV("*** %s: Deep buffer pcm config", __func__);
@@ -1777,7 +1778,7 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     } else {
         ALOGV("*** %s: Fast buffer pcm config", __func__);
         out->config = pcm_config_fast;
-        out->pcm_device = PCM_DEVICE;
+        out->pcm_device = PCM_DEVICE_PLAYBACK;
         type = OUTPUT_LOW_LATENCY;
     }
 
