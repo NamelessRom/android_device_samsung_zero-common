@@ -709,6 +709,14 @@ static void stop_voice_call(struct audio_device *adev)
     ALOGV("%s: Successfully closed %d active PCMs", __func__, status);
 }
 
+static void set_codec_rx_mute(struct audio_device *adev, bool mute)
+{
+    if (mute)
+        audio_route_apply_and_update_path(adev->ar, "codec_rx_mute-on");
+    else
+        audio_route_apply_and_update_path(adev->ar, "codec_rx_mute-off");
+}
+
 static void start_call(struct audio_device *adev)
 {
     if (adev->in_call) {
@@ -748,7 +756,9 @@ static void start_call(struct audio_device *adev)
         ril_set_two_mic_control(&adev->ril, AUDIENCE, TWO_MIC_SOLUTION_OFF);
     }
 
+    set_codec_rx_mute(adev, true);
     select_devices(adev);
+    set_codec_rx_mute(adev, false);
     start_voice_call(adev);
 
     adev_set_call_audio_path(adev);
