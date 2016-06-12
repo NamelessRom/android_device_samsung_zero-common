@@ -2525,12 +2525,20 @@
 		<param name="DSP6 ZM 6000d:0" id="15" />
 	</path>
 
-	<path name="codec_rx_mute">
-		<param name="HPOUT1 Digital Switch" id="0" />
-		<param name="HPOUT3 Digital Switch" id="0" />
-		<param name="HPOUT1 Digital Switch" id="1" />
-		<param name="HPOUT3 Digital Switch" id="1" />
-		<param name="SPK Enable Switch" id="0" />
+	<path name="codec_rx_mute-on">
+		<param name="HPOUT1 Digital Switch" id="0" value="0" />
+		<param name="HPOUT3 Digital Switch" id="0" value="0" />
+		<param name="HPOUT1 Digital Switch" id="1" value="0" />
+		<param name="HPOUT3 Digital Switch" id="1" value="0" />
+		<param name="SPK Enable Switch" id="0" value="0" />
+	</path>
+
+	<path name="codec_rx_mute-off">
+		<param name="HPOUT1 Digital Switch" id="0" value="1" />
+		<param name="HPOUT3 Digital Switch" id="0" value="1" />
+		<param name="HPOUT1 Digital Switch" id="1" value="1" />
+		<param name="HPOUT3 Digital Switch" id="1" value="1" />
+		<param name="SPK Enable Switch" id="0" value="1" />
 	</path>
 
 	<!-- Output volume stage -->
