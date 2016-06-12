@@ -69,6 +69,16 @@ const struct route_config voice_earpiece_wb = {
     "incall_wb-handset-mic"
 };
 
+const struct route_config voice_earpiece_gain = {
+    "gain-incall_nb-handset",
+    "gain-incall_nb-handset-mic"
+};
+
+const struct route_config voice_earpiece_wb_gain = {
+    "gain-incall_wb-handset",
+    "gain-incall_wb-handset-mic"
+};
+
 const struct route_config voice_headphones = {
     "incall_default-headphone",
     "incall_default-headphone-mic"
@@ -274,4 +284,73 @@ const struct route_config * const route_configs[IN_SOURCE_TAB_SIZE]
     },
 };
 
+const struct route_config * const gain_configs[IN_SOURCE_TAB_SIZE]
+                                               [OUT_DEVICE_TAB_SIZE] = {
+    {   /* IN_SOURCE_MIC */
+        &none,                      /* OUT_DEVICE_SPEAKER */
+        &none,                      /* OUT_DEVICE_EARPIECE */
+        &none,                      /* OUT_DEVICE_HEADSET */
+        &none,                      /* OUT_DEVICE_HEADPHONES */
+        &none,                      /* OUT_DEVICE_BT_SCO */
+        &none,                      /* OUT_DEVICE_BT_SCO_HEADSET_OUT */
+        &none,                      /* OUT_DEVICE_BT_SCO_CARKIT */
+        &none,                      /* OUT_DEVICE_SPEAKER_AND_HEADSET */
+        &none                       /* OUT_DEVICE_SPEAKER_AND_EARPIECE */
+    },
+    {   /* IN_SOURCE_CAMCORDER */
+        &none,                      /* OUT_DEVICE_SPEAKER */
+        &none,                      /* OUT_DEVICE_EARPIECE */
+        &none,                      /* OUT_DEVICE_HEADSET */
+        &none,                      /* OUT_DEVICE_HEADPHONES */
+        &none,                      /* OUT_DEVICE_BT_SCO */
+        &none,                      /* OUT_DEVICE_BT_SCO_HEADSET_OUT */
+        &none,                      /* OUT_DEVICE_BT_SCO_CARKIT */
+        &none,                      /* OUT_DEVICE_SPEAKER_AND_HEADSET */
+        &none                       /* OUT_DEVICE_SPEAKER_AND_EARPIECE */
+    },
+    {   /* IN_SOURCE_VOICE_RECOGNITION */
+        &none,                      /* OUT_DEVICE_SPEAKER */
+        &none,                      /* OUT_DEVICE_EARPIECE */
+        &none,                      /* OUT_DEVICE_HEADSET */
+        &none,                      /* OUT_DEVICE_HEADPHONES */
+        &none,                      /* OUT_DEVICE_BT_SCO */
+        &none,                      /* OUT_DEVICE_BT_SCO_HEADSET_OUT */
+        &none,                      /* OUT_DEVICE_BT_SCO_CARKIT */
+        &none,                      /* OUT_DEVICE_SPEAKER_AND_HEADSET */
+        &none                       /* OUT_DEVICE_SPEAKER_AND_EARPIECE */
+    },
+    {   /* IN_SOURCE_VOICE_COMMUNICATION */
+        &none,                      /* OUT_DEVICE_SPEAKER */
+        &none,                      /* OUT_DEVICE_EARPIECE */
+        &none,                      /* OUT_DEVICE_HEADSET */
+        &none,                      /* OUT_DEVICE_HEADPHONES */
+        &none,                      /* OUT_DEVICE_BT_SCO */
+        &none,                      /* OUT_DEVICE_BT_SCO_HEADSET_OUT */
+        &none,                      /* OUT_DEVICE_BT_SCO_CARKIT */
+        &none,                      /* OUT_DEVICE_SPEAKER_AND_HEADSET */
+        &none                       /* OUT_DEVICE_SPEAKER_AND_EARPIECE */
+    },
+    {   /* IN_SOURCE_VOICE_CALL */
+        &none,                      /* OUT_DEVICE_SPEAKER */
+        &voice_earpiece_gain,       /* OUT_DEVICE_EARPIECE */
+        &none,                      /* OUT_DEVICE_HEADSET */
+        &none,                      /* OUT_DEVICE_HEADPHONES */
+        &none,                      /* OUT_DEVICE_BT_SCO */
+        &none,                      /* OUT_DEVICE_BT_SCO_HEADSET_OUT */
+        &none,                      /* OUT_DEVICE_BT_SCO_CARKIT */
+        &none,                      /* OUT_DEVICE_SPEAKER_AND_HEADSET */
+        &none                       /* OUT_DEVICE_SPEAKER_AND_EARPIECE */
+    },
+    {   /* IN_SOURCE_VOICE_CALL_WB */
+        &none,                      /* OUT_DEVICE_SPEAKER */
+        &voice_earpiece_wb_gain,    /* OUT_DEVICE_EARPIECE */
+        &none,                      /* OUT_DEVICE_HEADSET */
+        &none,                      /* OUT_DEVICE_HEADPHONES */
+        &none,                      /* OUT_DEVICE_BT_SCO */
+        &none,                      /* OUT_DEVICE_BT_SCO_HEADSET_OUT */
+        &none,                      /* OUT_DEVICE_BT_SCO_CARKIT */
+        &none,                      /* OUT_DEVICE_SPEAKER_AND_HEADSET */
+        &none                       /* OUT_DEVICE_SPEAKER_AND_EARPIECE */
+    },
+};
 #endif
