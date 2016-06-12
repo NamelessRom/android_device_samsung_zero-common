@@ -150,17 +150,9 @@ struct pcm_config pcm_config_sco_wide = {
 
 struct pcm_config pcm_config_voice = {
     .channels = 2,
-    .rate = 8000,
-    .period_size = AUDIO_CAPTURE_PERIOD_SIZE,
-    .period_count = AUDIO_CAPTURE_PERIOD_COUNT,
-    .format = PCM_FORMAT_S16_LE,
-};
-
-struct pcm_config pcm_config_voice_wide = {
-    .channels = 2,
     .rate = 16000,
-    .period_size = AUDIO_CAPTURE_PERIOD_SIZE,
-    .period_count = AUDIO_CAPTURE_PERIOD_COUNT,
+    .period_size = 2048,
+    .period_count = 6,
     .format = PCM_FORMAT_S16_LE,
 };
 
@@ -636,8 +628,6 @@ static void stop_bt_sco(struct audio_device *adev) {
  */
 static int start_voice_call(struct audio_device *adev)
 {
-    struct pcm_config *voice_config;
-
     if (adev->pcm_voice_rx != NULL || adev->pcm_voice_tx != NULL) {
         ALOGW("%s: Voice PCMs already open!\n", __func__);
         return 0;
@@ -645,17 +635,11 @@ static int start_voice_call(struct audio_device *adev)
 
     ALOGV("%s: Opening voice PCMs", __func__);
 
-    if (adev->wb_amr) {
-        voice_config = &pcm_config_voice_wide;
-    } else {
-        voice_config = &pcm_config_voice;
-    }
-
     /* Open modem PCM channels */
     adev->pcm_voice_rx = pcm_open(PCM_CARD,
                                   PCM_DEVICE_VOICE,
                                   PCM_OUT | PCM_MONOTONIC,
-                                  voice_config);
+                                  &pcm_config_voice);
     if (adev->pcm_voice_rx != NULL && !pcm_is_ready(adev->pcm_voice_rx)) {
         ALOGE("%s: cannot open PCM voice RX stream: %s",
               __func__, pcm_get_error(adev->pcm_voice_rx));
@@ -665,7 +649,7 @@ static int start_voice_call(struct audio_device *adev)
     adev->pcm_voice_tx = pcm_open(PCM_CARD,
                                   PCM_DEVICE_VOICE,
                                   PCM_IN,
-                                  voice_config);
+                                  &pcm_config_voice);
     if (adev->pcm_voice_tx != NULL && !pcm_is_ready(adev->pcm_voice_tx)) {
         ALOGE("%s: cannot open PCM voice TX stream: %s",
               __func__, pcm_get_error(adev->pcm_voice_tx));
