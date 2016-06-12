@@ -757,12 +757,13 @@ static void start_call(struct audio_device *adev)
     }
 
     set_codec_rx_mute(adev, true);
-    select_devices(adev);
-    set_codec_rx_mute(adev, false);
-    start_voice_call(adev);
 
     adev_set_call_audio_path(adev);
     adev_set_voice_volume(&adev->hw_device, adev->voice_volume);
+    select_devices(adev);
+
+    set_codec_rx_mute(adev, false);
+    start_voice_call(adev);
 
     ril_set_call_clock_sync(&adev->ril, SOUND_CLOCK_START);
 }
