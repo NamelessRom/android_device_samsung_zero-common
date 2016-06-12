@@ -725,9 +725,6 @@ static void start_call(struct audio_device *adev)
     }
     adev->input_source = AUDIO_SOURCE_VOICE_CALL;
 
-    select_devices(adev);
-    start_voice_call(adev);
-
     /* FIXME: Turn on two mic control for earpiece and speaker */
     switch (adev->out_device) {
         case AUDIO_DEVICE_OUT_EARPIECE:
@@ -750,6 +747,9 @@ static void start_call(struct audio_device *adev)
         ALOGV("%s: disabling two mic control", __func__);
         ril_set_two_mic_control(&adev->ril, AUDIENCE, TWO_MIC_SOLUTION_OFF);
     }
+
+    select_devices(adev);
+    start_voice_call(adev);
 
     adev_set_call_audio_path(adev);
     adev_set_voice_volume(&adev->hw_device, adev->voice_volume);
