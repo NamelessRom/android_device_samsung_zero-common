@@ -183,6 +183,8 @@ struct audio_device {
     int cur_route_id;     /* current route ID: combination of input source
                            * and output device IDs */
     audio_mode_t mode;
+    char *input_gain_path;
+    char *output_gain_path;
 
     /* Call audio */
     struct pcm *pcm_voice_rx;
@@ -494,6 +496,9 @@ static void select_devices(struct audio_device *adev)
             input_route =
             (route_configs[input_source_id][output_device_id])->input_route;
         }
+
+        adev->input_gain_path = gain_configs[input_source_id][output_device_id]->input_route;
+        adev->output_gain_path = gain_configs[input_source_id][output_device_id]->output_route;
     } else {
         if (output_device_id != OUT_DEVICE_NONE) {
             output_route =
@@ -528,6 +533,19 @@ static void select_devices(struct audio_device *adev)
     if (input_route != NULL) {
         audio_route_apply_path(adev->ar, input_route);
     }
+
+    // Test: apply gains
+    if (adev->mode == AUDIO_MODE_IN_CALL) {
+        if (strcmp(adev->input_gain_path, "none") != 0) {
+            audio_route_apply_path(adev->ar, adev->input_gain_path);
+            ALOGV("select_devices() input_gain(%s)", adev->input_gain_path);
+        }
+        if (strcmp(adev->output_gain_path, "none") != 0) {
+            audio_route_apply_path(adev->ar, adev->output_gain_path);
+            ALOGV("select_devices() output_gain(%s)", adev->output_gain_path);
+        }
+    }
+
     audio_route_update_mixer(adev->ar);
 }
 
@@ -764,6 +782,16 @@ static void start_call(struct audio_device *adev)
 
     set_codec_rx_mute(adev, false);
     start_voice_call(adev);
+
+    //apply again gains
+    if (strcmp(adev->input_gain_path, "none") != 0) {
+        audio_route_apply_path(adev->ar, adev->input_gain_path);
+        ALOGV("%s: input_gain(%s)", __func__, adev->input_gain_path);
+    }
+    if (strcmp(adev->output_gain_path, "none") != 0) {
+        audio_route_apply_path(adev->ar, adev->output_gain_path);
+        ALOGV("%s: output_gain(%s)", __func__, adev->output_gain_path);
+    }
 
     ril_set_call_clock_sync(&adev->ril, SOUND_CLOCK_START);
 }
