@@ -1,38 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <device name="Android">
+    <!-- All values are in mAh except as noted -->
     <item name="none">0</item>
+
+    <!-- Power consumption when screen is on, not including the backlight power. -->
     <item name="screen.on">73</item>
+
+    <!-- Power consumption at full backlight brightness. If the backlight is at
+     * 50% brightness, then this should be multiplied by 0.5 -->
     <item name="screen.full">227</item>
+
+    <!-- Power consumption when Bluetooth driver is on. -->
     <item name="bluetooth.on">1</item>
+
+    <!-- Power consumption when Bluetooth driver is transmitting/receiving. -->
     <item name="bluetooth.active">116</item>
+
+    <!-- Power consumption when WiFi driver is on. -->
     <item name="wifi.on">2</item>
+
+    <!-- Power consumption when WiFi driver is scanning for networks. -->
     <item name="wifi.scan">313</item>
+
+    <!-- Power consumption when WiFi driver is transmitting/receiving. -->
     <item name="wifi.active">767</item>
+
+    <!-- Power consumption when GPS is on. -->
     <item name="gps.on">2</item>
+
+    <!-- Power consumed by the audio hardware when playing back audio content. This is in addition
+     * to the CPU power, probably due to a DSP and / or amplifier. -->
     <item name="dsp.audio">53</item>
+
+    <!-- Power consumed by any media hardware when playing back video content. This is in addition
+     * to the CPU power, probably due to a DSP. -->
     <item name="dsp.video">196</item>
-    <item name="radio.active">250</item>
+
+    <!-- Power consumption when talking on the phone. -->
+    <item name="radio.active">166</item>
+
+    <!-- Power consumption when cell radio is hunting for a signal. -->
     <item name="radio.scanning">82</item>
+
+    <!-- Power consumption when cell radio is on but not on a call. -->
     <array name="radio.on">
         <value>3.4</value>
         <value>3.4</value>
     </array>
-    <array name="cpu.speeds">
-        <value>1500000</value>
-        <value>1400000</value>
-        <value>1300000</value>
-        <value>1200000</value>
-        <value>1100000</value>
-        <value>1000000</value>
-        <value>900000</value>
-        <value>800000</value>
-        <value>700000</value>
-        <value>600000</value>
-        <value>500000</value>
-        <value>400000</value>
+
+    <array name="cpu.clusters.cores">
+        <value>4</value>
+        <value>4</value>
     </array>
-    <item name="cpu.idle">4.3</item>
-    <array name="cpu.active">
+
+    <array name="cpu.active.cluster0">
         <value>102</value>
         <value>98</value>
         <value>96</value>
@@ -46,7 +67,73 @@
         <value>49</value>
         <value>48</value>
     </array>
+
+    <array name="cpu.speeds.cluster0">
+        <value>1500000</value>
+        <value>1400000</value>
+        <value>1300000</value>
+        <value>1200000</value>
+        <value>1100000</value>
+        <value>1000000</value>
+        <value>900000</value>
+        <value>800000</value>
+        <value>700000</value>
+        <value>600000</value>
+        <value>500000</value>
+        <value>400000</value>
+    </array>
+
+    <array name="cpu.active.cluster1">
+        <value>484</value>
+        <value>418</value>
+        <value>362</value>
+        <value>324</value>
+        <value>245</value>
+        <value>233</value>
+        <value>197</value>
+        <value>160</value>
+        <value>157</value>
+        <value>132</value>
+        <value>114</value>
+        <value>91</value>
+        <value>82</value>
+    </array>
+
+    <array name="cpu.speeds.cluster1">
+        <value>2100000</value>
+        <value>2000000</value>
+        <value>1896000</value>
+        <value>1800000</value>
+        <value>1704000</value>
+        <value>1600000</value>
+        <value>1500000</value>
+        <value>1400000</value>
+        <value>1300000</value>
+        <value>1200000</value>
+        <value>1100000</value>
+        <value>1000000</value>
+        <value>900000</value>
+        <value>800000</value>
+    </array>
+
+    <!-- Power consumption when CPU is in power collapse mode. -->
+    <item name="cpu.idle">4.3</item>
+
+    <!-- Power consumption when CPU is awake (when a wake lock is held).  This
+     * should be 0 on devices that can go into full CPU power collapse even
+     * when a wake lock is held.  Otherwise, this is the power consumption in
+     * addition to POWERR_CPU_IDLE due to a wake lock being held but with no
+     * CPU activity. -->
+    <item name="cpu.awake">40.1</item>
+
+    <item name="wakeup.power">0.15</item>
+
+    <!-- Battery capacity in milliAmpHour (mAh). -->
     <item name="battery.capacity">2550</item>
+
+    <!-- Power consumed by wif batched scaning.  Broken down into bins by
+     * Channels Scanned per Hour.  May do 1-720 scans per hour of 1-100 channels
+     * for a range of 1-72,000.  Going logrithmic (1-8, 9-64, 65-512, 513-4096, 4097-)! -->
     <array name="wifi.batchedscan">
         <value>.0002</value>
         <value>.002</value>
