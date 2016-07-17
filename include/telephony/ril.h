@@ -5142,6 +5142,7 @@ typedef struct {
  **********************************************************/
 
 #define SAMSUNG_UNSOL_RESPONSE_BASE 11000
+#define SAMSUNG_UNSOL_RESPONSE_BASE_NEXT_GEN 20000
 
 #define RIL_UNSOL_RELEASE_COMPLETE_MESSAGE 11001
 #define RIL_UNSOL_STK_SEND_SMS_RESULT 11002
@@ -5179,6 +5180,7 @@ typedef struct {
 /* SNDMGR */
 
 #define RIL_UNSOL_SNDMGR_WB_AMR_REPORT 20017
+#define RIL_UNSOL_SNDMGR_CLOCK_CTRL 20022
 
 /***********************************************************************/
 
