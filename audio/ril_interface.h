@@ -49,5 +49,6 @@ int ril_set_two_mic_control(struct ril_handle *ril,
                             enum __TwoMicSolReport report);
 
 void ril_register_set_wb_amr_callback(void *function, void *data);
+void ril_register_set_clock_ctrl_callback(void *function, void *data);
 
 #endif

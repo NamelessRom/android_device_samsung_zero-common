@@ -40,6 +40,16 @@ void ril_register_set_wb_amr_callback(void *function, void *data)
     callback_data = data;
 }
 
+/* Sound clock callback */
+void (*_audio_set_clock_ctrl_callback)(void *, int);
+void *callback_data2 = NULL;
+
+void ril_register_set_clock_ctrl_callback(void *function, void *data)
+{
+    _audio_set_clock_ctrl_callback = function;
+    callback_data2 = data;
+}
+
 /* This is the callback function that the RIL uses to
 set the wideband AMR state */
 static int ril_set_wb_amr_callback(void *ril_client __unused,
@@ -52,7 +62,26 @@ static int ril_set_wb_amr_callback(void *ril_client __unused,
         return -1;
     }
 
+    //ALOGV("%s: enable(%d) _audio_set_wb_amr_callback(%p)", __func__, enable, _audio_set_wb_amr_callback);
     _audio_set_wb_amr_callback(callback_data, enable);
+
+    return 0;
+}
+
+/* This is the callback function that the RIL uses to
+set the sound clock */
+static int ril_set_clock_ctrl_callback(void *ril_client __unused,
+                                 const void *data,
+                                 size_t datalen)
+{
+    int enable = ((int *)data)[0];
+
+    //ALOGV("%s: enable(%d) _audio_set_clock_ctrl_callback(%p)", __func__, enable, _audio_set_clock_ctrl_callback);
+    if (callback_data2 == NULL || _audio_set_clock_ctrl_callback == NULL) {
+        return -1;
+    }
+
+    _audio_set_clock_ctrl_callback(callback_data2, enable);
 
     return 0;
 }
@@ -94,6 +123,11 @@ int ril_open(struct ril_handle *ril)
     RegisterUnsolicitedHandler(ril->client,
                                RIL_UNSOL_SNDMGR_WB_AMR_REPORT,
                                (RilOnUnsolicited)ril_set_wb_amr_callback);
+
+    /* register the sound clock callback */
+    RegisterUnsolicitedHandler(ril->client,
+                               RIL_UNSOL_SNDMGR_CLOCK_CTRL,
+                               (RilOnUnsolicited)ril_set_clock_ctrl_callback);
 
     property_get(VOLUME_STEPS_PROPERTY, property, VOLUME_STEPS_DEFAULT);
     ril->volume_steps_max = atoi(property);

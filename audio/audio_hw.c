@@ -831,6 +831,8 @@ static void adev_set_wb_amr_callback(void *data, int enable)
 
     pthread_mutex_lock(&adev->lock);
 
+    //ALOGV("%s: enable(%d)", __func__, enable);
+
     if (adev->wb_amr != enable) {
         adev->wb_amr = enable;
 
@@ -846,6 +848,13 @@ static void adev_set_wb_amr_callback(void *data, int enable)
     }
 
     pthread_mutex_unlock(&adev->lock);
+}
+
+static void adev_set_clock_ctrl_callback(void *data, int enable)
+{
+    struct audio_device *adev = (struct audio_device *)data;
+
+    //ALOGV("%s: enable(%d)", __func__, enable);
 }
 
 static void adev_set_call_audio_path(struct audio_device *adev)
@@ -2198,18 +2207,11 @@ static int adev_open(const hw_module_t* module, const char* name,
     /* RIL */
     ril_open(&adev->ril);
 
-    char voice_config[PROPERTY_VALUE_MAX];
+    /* register callback for wideband AMR setting */
+    ril_register_set_wb_amr_callback(adev_set_wb_amr_callback, (void *)adev);
 
-    if (property_get("audio_hal.force_voice_config", voice_config, "") > 0) {
-        if ((strncmp(voice_config, "narrow", 6)) == 0)
-            adev->wb_amr = false;
-        else if ((strncmp(voice_config, "wide", 4)) == 0)
-            adev->wb_amr = true;
-        ALOGV("%s: Forcing voice config: %s", __func__, voice_config);
-    } else {
-        /* register callback for wideband AMR setting */
-        ril_register_set_wb_amr_callback(adev_set_wb_amr_callback, (void *)adev);
-    }
+    /* register callback for sound clock control */
+    ril_register_set_clock_ctrl_callback(adev_set_clock_ctrl_callback, (void *)adev);
 
     /* Two mic control */
     if (property_get_bool("audio_hal.disable_two_mic", false))
