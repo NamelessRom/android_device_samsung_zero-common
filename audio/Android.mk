@@ -27,6 +27,10 @@ ifeq ($(BOARD_USES_NEW_HDMI), true)
     LOCAL_CFLAGS += -DUSES_NEW_HDMI
 endif
 
+ifeq ($(TARGET_BOARD_PLATFORM),exynos5)
+    LOCAL_CFLAGS += -DRIL_CALL_AUDIO_PATH_EXTRAVOLUME
+endif
+
 LOCAL_C_INCLUDES += \
 	external/tinyalsa/include \
 	$(call include-path-for, audio-effects) \
