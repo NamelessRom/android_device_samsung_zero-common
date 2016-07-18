@@ -210,6 +210,7 @@ struct audio_device {
 
     struct stream_out *outputs[OUTPUT_TOTAL];
     pthread_mutex_t lock_outputs; /* see note below on mutex acquisition order */
+    struct stream_out *primary_output_stream;
 };
 
 struct stream_out {
@@ -1843,14 +1844,19 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     /* out->muted = false; by calloc() */
     /* out->written = 0; by calloc() */
 
-    pthread_mutex_lock(&adev->lock_outputs);
+    pthread_mutex_lock(&adev->lock);
     if (adev->outputs[type]) {
-        pthread_mutex_unlock(&adev->lock_outputs);
+        pthread_mutex_unlock(&adev->lock);
         ret = -EBUSY;
         goto err_open;
     }
     adev->outputs[type] = out;
-    pthread_mutex_unlock(&adev->lock_outputs);
+
+    if (flags & AUDIO_OUTPUT_FLAG_PRIMARY) {
+        //ALOGV("%s: primary output(0x%x)", __func__, out);
+        adev->primary_output_stream = out;
+    }
+    pthread_mutex_unlock(&adev->lock);
 
     *stream_out = &out->stream;
 
@@ -1979,7 +1985,9 @@ static int adev_set_mode(struct audio_hw_device *dev, audio_mode_t mode)
         return 0;
     }
 
+    pthread_mutex_lock(&adev->primary_output_stream->lock);
     pthread_mutex_lock(&adev->lock);
+
     adev->mode = mode;
 
     if (adev->mode == AUDIO_MODE_IN_CALL) {
@@ -1991,6 +1999,7 @@ static int adev_set_mode(struct audio_hw_device *dev, audio_mode_t mode)
     }
 
     pthread_mutex_unlock(&adev->lock);
+    pthread_mutex_lock(&adev->primary_output_stream->lock);
 
     return 0;
 }
