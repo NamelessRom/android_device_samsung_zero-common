@@ -1943,6 +1943,8 @@ static int adev_init_check(const struct audio_hw_device *dev __unused)
 static int adev_set_voice_volume(struct audio_hw_device *dev, float volume)
 {
     struct audio_device *adev = (struct audio_device *)dev;
+    int volume_index = 0;
+    char path[64] = {0};
 
     adev->voice_volume = volume;
 
@@ -1971,6 +1973,16 @@ static int adev_set_voice_volume(struct audio_hw_device *dev, float volume)
         }
 
         ril_set_call_volume(&adev->ril, sound_type, volume);
+
+        volume_index = (int) (adev->voice_volume * 5.0f);
+
+        if (adev->wb_amr)
+            snprintf(&path, sizeof(path), "call_wb_volume_index-%d", volume_index);
+        else
+            snprintf(&path, sizeof(path), "call_nb_volume_index-%d", volume_index);
+
+        //ALOGV("%s: IN_CALL wb_amr(%d) path(%s)", __func__, adev->wb_amr, path);
+        audio_route_apply_and_update_path(adev->ar, path);
     }
 
     return 0;
