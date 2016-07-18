@@ -1279,7 +1279,10 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
     if (ret >= 0) {
         val = atoi(value);
 
-        lock_all_outputs(adev);
+        pthread_mutex_lock(&out->lock);
+        pthread_mutex_lock(&adev->lock);
+
+        ALOGV("%s: out->device(%d) val(%d)", __func__, out->device, val);
 
         if ((out->device != val) && (val != 0)) {
             /* Force standby if moving to/from SPDIF or if the output
@@ -1314,6 +1317,7 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
              */
             if (adev->in_call) {
                 if (route_changed(adev)) {
+                    ALOGV("%s: IN CALL route has changed", __func__);
                     stop_call(adev);
                     start_call(adev);
                 }
@@ -1327,7 +1331,8 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
             }
         }
 
-        unlock_all_outputs(adev, NULL);
+        pthread_mutex_unlock(&adev->lock);
+        pthread_mutex_unlock(&out->lock);
     }
 
     str_parms_destroy(parms);
