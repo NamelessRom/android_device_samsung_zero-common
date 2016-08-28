@@ -28,9 +28,9 @@ DEVICE_PACKAGE_OVERLAYS += device/samsung/zero-common/overlay-gsm
 endif
 
 # This device is 640dpi.  However the platform doesn't
-# currently contain all of the bitmaps at 560dpi density so
+# currently contain all of the bitmaps at 640dpi density so
 # we do this little trick to fall back to the xxhdpi version
-# if the 560dpi doesn't exist.
+# if the 640dpi doesn't exist.
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := 640dpi
 # A list of dpis to select prebuilt apk, in precedence order.
@@ -90,9 +90,13 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     tinymix
 
-# Charger
+# Browser
 PRODUCT_PACKAGES += \
-    charger_res_images
+    Gello
+    
+# Camera
+PRODUCT_PACKAGES += \
+    Snap
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -122,6 +126,10 @@ PRODUCT_PACKAGES += \
 # Libstlport
 PRODUCT_PACKAGES += \
     libstlport
+    
+# MDNIE
+PRODUCT_PACKAGES += \
+    AdvancedDisplay
 
 # Media profile
 PRODUCT_COPY_FILES += \
@@ -157,7 +165,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     af.fast_track_multiplier=1 \
     audio_hal.force_voice_config=wide \
     ro.nfc.sec_hal=true \
-    wifi.interface=wlan0
+    wifi.interface=wlan0 \
+    debug.hwc.force_gpu=1 \
+    ro.bq.gpu_to_cpu_unsupported=1
 
 # Radio
 PRODUCT_PACKAGES += \
@@ -196,6 +206,11 @@ PRODUCT_COPY_FILES += \
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
+    
+# call Samsung LSI board support package
+$(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
+$(call inherit-product, hardware/samsung_slsi-cm/exynos7420/exynos7420.mk)
+
 
 # Get non-open-source specific aspects
 $(call inherit-product-if-exists, vendor/samsung/zero-common/zero-common-vendor.mk)
