@@ -51,13 +51,11 @@ TARGET_BOOTLOADER_BOARD_NAME := universal7420
 TARGET_NO_BOOTLOADER := true
 
 # Charger
+BACKLIGHT_PATH := /sys/devices/13900000.dsim/backlight/panel/brightness
 BOARD_BATTERY_DEVICE_NAME := battery
 BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
 CHARGING_ENABLED_PATH := "/sys/class/power_supply/battery/batt_lp_charging"
-
-# Exynos display
-BOARD_USES_VIRTUAL_DISPLAY := true
 
 # FIMG2D
 BOARD_USES_SKIA_FIMGAPI := true
@@ -69,12 +67,6 @@ EXTENDED_FONT_FOOTPRINT := true
 USE_OPENGL_RENDERER := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 5
 
-EXYNOS5_ENHANCEMENTS := true
-
-ifdef EXYNOS5_ENHANCEMENTS
-COMMON_GLOBAL_CFLAGS += -DEXYNOS5_ENHANCEMENTS
-endif
-
 # (G)SCALER
 BOARD_USES_SCALER := true
 BOARD_USES_DT := true
@@ -83,7 +75,7 @@ BOARD_USES_DT := true
 BOARD_HARDWARE_CLASS += device/samsung/zero-common/cmhw
 
 # HWCServices
-# BOARD_USES_HWC_SERVICES := true
+BOARD_USES_HWC_SERVICES := true
 
 # HDMI
 BOARD_HDMI_INCAPABLE := true
@@ -143,16 +135,17 @@ TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.samsungexynos7420
 BOARD_SUPPRESS_SECURE_ERASE := true
 BOARD_HAS_DOWNLOAD_MODE := true
 
-# Renderscript
-BOARD_OVERRIDE_RS_CPU_VARIANT_32 := cortex-a53
-BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
-
 # Samsung Seiren audio
 BOARD_USE_ALP_AUDIO := true
 BOARD_USE_SEIREN_AUDIO := true
 
 # Sensors
 TARGET_NO_SENSOR_PERMISSION_CHECK := true
+
+# Sepolicy
+BOARD_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+
+
 
 # Twrp
 ifneq ($(strip $(wildcard $(TOP)/bootable/recovery/variables.h)),)
